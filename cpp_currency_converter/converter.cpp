@@ -39,17 +39,12 @@ void GetCurrencyToArray()
 
 void ShowCurrencies()
 {
-    std::cout << "\tID\tNumCode\tCCode\tCurrencyName\t\t\tNominal\tCurrencyRate" << std::endl << std::endl;
+    std::cout << "\tCurrencyName" << std::endl << std::endl;
     for (size_t i = 0; i < CurrencyArray.size(); i++)
     {
 
         std::cout << i + 1 
-            << "\t" << CurrencyArray[i].ID
-            << "\t" << CurrencyArray[i].NumCode
-            << "\t" << CurrencyArray[i].CharCode
             << "\t" << CurrencyArray[i].CurrencyName
-            << "\t" << CurrencyArray[i].Nominal
-            << "\t" << CurrencyArray[i].CurrencyRate
             << std::endl;
     }
 }

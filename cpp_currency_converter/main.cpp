@@ -19,17 +19,17 @@ std::unordered_map<AppPages, std::string> PageMessages = {
     {ERROR_PAGE, "smth wrong in your input"},
 };
 
-std::string divider = std::string(20, '=');
+std::string Divider = std::string(20, '=');
 
-bool ParseInput(std::string input, std::vector<float> &res)
+bool ParseInput(std::string InputString, std::vector<float> &Result)
 {
     std::string temp;
-    for (auto& c : input)
+    for (auto& c : InputString)
     {
         switch (c)
         {
         case ' ':
-            res.push_back(std::stof(temp));
+            Result.push_back(std::stof(temp));
             temp = "";
             break;
         case '.':
@@ -42,23 +42,23 @@ bool ParseInput(std::string input, std::vector<float> &res)
             break;
         }
     }
-    res.push_back(std::stof(temp));
+    Result.push_back(std::stof(temp));
  
-    if (res.size() != 3)
+    if (Result.size() != 3)
         return false;
 
     return true;
 }
 
-float converted_money;
+float ConvertedMoney;
 
-void App(AppPages& page) {
+void App(AppPages& Page) {
     //system("cls");
     std::cout << "CURRENCY CONVERTER" << std::endl << std::endl;
-    std::cout << PageMessages[page] << std::endl << std::endl;
-    std::cout << divider << std::endl << std::endl;
+    std::cout << PageMessages[Page] << std::endl << std::endl;
+    std::cout << Divider << std::endl << std::endl;
 
-    switch (page)
+    switch (Page)
     {
     case MAIN_PAGE:
         std::cout << "HELLO WORLD!" << std::endl;
@@ -68,43 +68,43 @@ void App(AppPages& page) {
         ShowCurrenciesList();
         break;
     case RESULT_PAGE:
-        std::cout << converted_money << std::endl;
+        std::cout << ConvertedMoney << std::endl;
         break;
     default:
         break;
     }
 
 
-    std::cout<< std::endl << divider << std::endl << std::endl;
+    std::cout<< std::endl << Divider << std::endl << std::endl;
     std::cout << "Choose action, get currency [l]ist with ids, [q]uit" << std::endl;
     std::cout << "Or you can two ids of your currencies and amount in format 'currency_id_from currency_id_to amount_currency'" << std::endl;
 
-    std::string input;
-    std::getline(std::cin, input);
+    std::string Input;
+    std::getline(std::cin, Input);
     std::cout << std::endl;
 
-    if (input == "q")
+    if (Input == "q")
     {
-        page = EXIT_PAGE;
+        Page = EXIT_PAGE;
     }
-    else if (input == "l")
+    else if (Input == "l")
     {
-        page = SHOW_CURRENCY_PAGE;
+        Page = SHOW_CURRENCY_PAGE;
     }
     else
     {
         std::vector<float> v;
-        if (!ParseInput(input, v))
+        if (!ParseInput(Input, v))
         {
-            page = ERROR_PAGE;
+            Page = ERROR_PAGE;
             return;
         }
-        if (!ConvertCurrency(v, converted_money))
+        if (!ConvertCurrency(v, ConvertedMoney))
         {
-            page = ERROR_PAGE;
+            Page = ERROR_PAGE;
             return;
         }
-        page = RESULT_PAGE;
+        Page = RESULT_PAGE;
     }
 
 }
@@ -114,12 +114,12 @@ int main()
 
     GetCurrencyToArray();
     bool bRun = true;
-    AppPages page = MAIN_PAGE;
+    AppPages Page = MAIN_PAGE;
     while (bRun)
     {
-        App(page);
+        App(Page);
 
-        if (page == EXIT_PAGE)
+        if (Page == EXIT_PAGE)
             bRun = false;
     }
 }

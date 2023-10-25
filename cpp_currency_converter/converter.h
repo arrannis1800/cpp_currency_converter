@@ -42,4 +42,4 @@ void GetCurrencyToArray();
 
 void ShowCurrenciesList();
 
-bool ConvertCurrency(std::vector<float>& input, float& res);
+bool ConvertCurrency(std::vector<float>& InputVector, float& Result);

@@ -8,36 +8,36 @@ pugi::xml_document GetCurrencyXML()
                                 cpr::Authentication{"user", "pass", cpr::AuthMode::BASIC},
                                 cpr::Parameters{{"anon", "true"}, { "key", "value" }});
 
-    pugi::xml_document doc;
+    pugi::xml_document XMLResultDoc;
 
-    pugi::xml_parse_result res = doc.load_string(r.text.c_str());
+    pugi::xml_parse_result res = XMLResultDoc.load_string(r.text.c_str());
     if (res)
-        return doc;
+        return XMLResultDoc;
     return pugi::xml_document();
 }
 
 
 void GetCurrencyToArray()
 {
-    pugi::xml_document doc = GetCurrencyXML();
+    pugi::xml_document XMLResultDoc = GetCurrencyXML();
     CurrencyArray.push_back(Currency(
         643,
         "RUB",
         "Russian ruble",
         1,
         1.0f));
-    if (!doc)
+    if (!XMLResultDoc)
         return;
-    for (auto& child : doc.child("ValCurs").children())
+    for (auto& CurrencyRow : XMLResultDoc.child("ValCurs").children())
     {
-        std::string currencyRate_str = child.child("Value").text().as_string();
-        std::replace(currencyRate_str.begin(), currencyRate_str.end(), ',', '.');
-        float currencyRate = std::stof(currencyRate_str);
+        std::string CurrencyRate_str = CurrencyRow.child("Value").text().as_string();
+        std::replace(CurrencyRate_str.begin(), CurrencyRate_str.end(), ',', '.');
+        float currencyRate = std::stof(CurrencyRate_str);
         CurrencyArray.push_back(Currency(
-            child.child("NumCode").text().as_int(),
-            child.child("CharCode").text().as_string(),
-            child.child("Name").text().as_string(),
-            child.child("Nominal").text().as_int(),
+            CurrencyRow.child("NumCode").text().as_int(),
+            CurrencyRow.child("CharCode").text().as_string(),
+            CurrencyRow.child("Name").text().as_string(),
+            CurrencyRow.child("Nominal").text().as_int(),
             currencyRate));
     }
 }
@@ -58,17 +58,18 @@ void ShowCurrenciesList()
     }
 }
 
-bool ConvertCurrency(std::vector<float>& input, float& res)
+bool ConvertCurrency(std::vector<float>& InputVector, float& Result)
 {
-    for (auto i : input)
-        std::cout << i << ' ';
+    size_t CurrencyArrayLength = CurrencyArray.size();
 
-    size_t length = CurrencyArray.size();
-
-    if (input[0] > length || input[1] > length)
+    if (InputVector[0] > CurrencyArrayLength || InputVector[1] > CurrencyArrayLength)
         return false;
 
-    res = CurrencyArray[(int)input[0]].CurrencyRate/ CurrencyArray[(int)input[0]].Nominal / CurrencyArray[(int)input[1]].CurrencyRate / CurrencyArray[(int)input[1]].Nominal * input[2];
+    float NormalaizedCurrencyFrom = CurrencyArray[(int)InputVector[0]].CurrencyRate / CurrencyArray[(int)InputVector[0]].Nominal;
+    float NormalaizedCurrencyTo = CurrencyArray[(int)InputVector[1]].CurrencyRate / CurrencyArray[(int)InputVector[1]].Nominal;
+    float Amount = InputVector[2];
+
+    Result = NormalaizedCurrencyFrom / NormalaizedCurrencyTo * Amount;
 
     return true;
 }

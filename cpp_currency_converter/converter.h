@@ -10,15 +10,14 @@
 
 struct Currency
 {
-	std::string ID;
 	int NumCode;
 	std::string CharCode;
 	std::string CurrencyName;
 	int Nominal;
 	float CurrencyRate;
 
-	Currency(std::string ID, int NumCode, const std::string& CharCode, const std::string& CurrencyName, int Nominal, float CurrencyRate)
-		: ID(ID), NumCode(NumCode), CharCode(CharCode), CurrencyName(CurrencyName), Nominal(Nominal), CurrencyRate(CurrencyRate)
+	Currency(int NumCode, const std::string& CharCode, const std::string& CurrencyName, int Nominal, float CurrencyRate)
+		: NumCode(NumCode), CharCode(CharCode), CurrencyName(CurrencyName), Nominal(Nominal), CurrencyRate(CurrencyRate)
 	{
 		ResizeStrings();
 	}
@@ -41,4 +40,6 @@ pugi::xml_document GetCurrencyXML();
 
 void GetCurrencyToArray();
 
-void ShowCurrencies();
+void ShowCurrenciesList();
+
+bool ConvertCurrency(std::vector<float>& input, float& res);

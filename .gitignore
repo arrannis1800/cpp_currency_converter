@@ -34,5 +34,6 @@
 *.opendb
 .vs
 *.sln
+*.vcxproj.*
 x64
 packages

@@ -6,21 +6,54 @@
 
 enum AppPages {
     MAIN_PAGE = 0,
-    CHOOSE_CURRENCY_PAGE,
-    ENTER_AMOUNT_PAGE,
+    SHOW_CURRENCY_PAGE,
+    RESULT_PAGE,
+    ERROR_PAGE,
     EXIT_PAGE,
 };
 
 std::unordered_map<AppPages, std::string> PageMessages = {
     {MAIN_PAGE, "Converter inisialized"},
-    {CHOOSE_CURRENCY_PAGE, "List of all currencies"},
-    {ENTER_AMOUNT_PAGE, "Not implemented yet"},
+    {SHOW_CURRENCY_PAGE, "List of all currencies"},
+    {RESULT_PAGE, "Result"},
+    {ERROR_PAGE, "smth wrong in your input"},
 };
 
 std::string divider = std::string(20, '=');
 
+bool ParseInput(std::string input, std::vector<float> &res)
+{
+    std::string temp;
+    for (auto& c : input)
+    {
+        switch (c)
+        {
+        case ' ':
+            res.push_back(std::stof(temp));
+            temp = "";
+            break;
+        case '.':
+            temp += ',';
+            break;
+        case '-':
+            return false;
+        default:
+            temp += c;
+            break;
+        }
+    }
+    res.push_back(std::stof(temp));
+ 
+    if (res.size() != 3)
+        return false;
+
+    return true;
+}
+
+float converted_money;
+
 void App(AppPages& page) {
-    system("cls");
+    //system("cls");
     std::cout << "CURRENCY CONVERTER" << std::endl << std::endl;
     std::cout << PageMessages[page] << std::endl << std::endl;
     std::cout << divider << std::endl << std::endl;
@@ -31,8 +64,11 @@ void App(AppPages& page) {
         std::cout << "HELLO WORLD!" << std::endl;
         std::cout << "IT'S MY TERMINAL BASED CURRENCY CONVERTER" << std::endl;
         break;
-    case CHOOSE_CURRENCY_PAGE:
-        ShowCurrencies();
+    case SHOW_CURRENCY_PAGE:
+        ShowCurrenciesList();
+        break;
+    case RESULT_PAGE:
+        std::cout << converted_money << std::endl;
         break;
     default:
         break;
@@ -40,25 +76,35 @@ void App(AppPages& page) {
 
 
     std::cout<< std::endl << divider << std::endl << std::endl;
-    std::cout << "Choose action, get currency [l]ist,[c]onvert, [q]uit" << std::endl;
+    std::cout << "Choose action, get currency [l]ist with ids, [q]uit" << std::endl;
+    std::cout << "Or you can two ids of your currencies and amount in format 'currency_id_from currency_id_to amount_currency'" << std::endl;
 
-    char input;
-    std::cin >> input;
+    std::string input;
+    std::getline(std::cin, input);
     std::cout << std::endl;
 
-    switch (input)
+    if (input == "q")
     {
-    case 'q':
         page = EXIT_PAGE;
-        break;
-    case 'l':
-        page = CHOOSE_CURRENCY_PAGE;
-        break;
-    case 'c':
-        page = ENTER_AMOUNT_PAGE;
-        break;
-    default:
-        break;
+    }
+    else if (input == "l")
+    {
+        page = SHOW_CURRENCY_PAGE;
+    }
+    else
+    {
+        std::vector<float> v;
+        if (!ParseInput(input, v))
+        {
+            page = ERROR_PAGE;
+            return;
+        }
+        if (!ConvertCurrency(v, converted_money))
+        {
+            page = ERROR_PAGE;
+            return;
+        }
+        page = RESULT_PAGE;
     }
 
 }

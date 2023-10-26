@@ -65,11 +65,11 @@ bool ConvertCurrency(std::vector<float>& InputVector, float& Result)
     if (InputVector[0] > CurrencyArrayLength || InputVector[1] > CurrencyArrayLength)
         return false;
 
-    float NormalaizedCurrencyFrom = CurrencyArray[(int)InputVector[0]].CurrencyRate / CurrencyArray[(int)InputVector[0]].Nominal;
-    float NormalaizedCurrencyTo = CurrencyArray[(int)InputVector[1]].CurrencyRate / CurrencyArray[(int)InputVector[1]].Nominal;
+    float NormalizedCurrencyFrom = CurrencyArray[(int)InputVector[0]].CurrencyRate / CurrencyArray[(int)InputVector[0]].Nominal;
+    float NormalizedCurrencyTo = CurrencyArray[(int)InputVector[1]].CurrencyRate / CurrencyArray[(int)InputVector[1]].Nominal;
     float Amount = InputVector[2];
 
-    Result = NormalaizedCurrencyFrom / NormalaizedCurrencyTo * Amount;
+    Result = NormalizedCurrencyFrom / NormalizedCurrencyTo * Amount;
 
     return true;
 }

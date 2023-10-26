@@ -7,4 +7,3 @@
 
 ## ToDo
 - make visualization based on chosen variable, not  only ruble
-- move App to class with own states insides

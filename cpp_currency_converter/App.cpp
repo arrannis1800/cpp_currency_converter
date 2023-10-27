@@ -5,10 +5,16 @@ bool App::ParseInput(std::string InputString, std::vector<float>& Result)
     std::string temp;
     for (auto& c : InputString)
     {
+
         switch (c)
         {
         case ' ':
-            Result.push_back(std::stof(temp));
+            try
+            {
+                Result.push_back(std::stof(temp));
+                throw temp;
+            }
+            catch (std::exception& ex) { return false; }
             temp = "";
             break;
         case '.':
@@ -21,10 +27,11 @@ bool App::ParseInput(std::string InputString, std::vector<float>& Result)
             break;
         }
     }
-    Result.push_back(std::stof(temp));
-
-    if (Result.size() != 3)
-        return false;
+    try 
+    {
+        Result.push_back(std::stof(temp));
+    }
+    catch (std::exception& ex) { return false; }
 
     return true;
 }
@@ -76,7 +83,11 @@ void App::ShowPage(AppPages& Page) {
 
     std::cout << std::endl << Divider << std::endl << std::endl;
     std::cout << "Choose action, get currency [l]ist with ids, [q]uit" << std::endl;
-    std::cout << "Or you can two ids of your currencies and amount in format 'currency_id_from currency_id_to amount_currency'" << std::endl;
+    if (Page == SHOW_CURRENCY_PAGE)
+        std::cout << "You can recalculate this list with a new default currency by enter new id.\nCurrent currency is " 
+        << CurrencyArray[CurrentMainCurrencyId].CurrencyName << std::endl;
+    std::cout << "You also can two ids of your currencies and amount in format 'currency_id_from currency_id_to amount_currency'" 
+        << std::endl;
 
     std::string Input;
     std::getline(std::cin, Input);
@@ -98,12 +109,17 @@ void App::ShowPage(AppPages& Page) {
             Page = ERROR_PAGE;
             return;
         }
-        if (!ConvertCurrency(v, ConvertedMoney))
+        if (v.size() == 3)
         {
-            Page = ERROR_PAGE;
+            Page = ConvertCurrency(v, ConvertedMoney) ? RESULT_PAGE : ERROR_PAGE;
             return;
         }
-        Page = RESULT_PAGE;
+        if (v.size() == 1 && Page == SHOW_CURRENCY_PAGE)
+        {
+            Page = RecalculateCurrencyArray((size_t)v[0]) ? SHOW_CURRENCY_PAGE : ERROR_PAGE;
+            return;
+        }
+        Page = ERROR_PAGE;
     }
 
 }

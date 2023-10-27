@@ -32,9 +32,6 @@ struct Currency
 
 extern std::vector<Currency> CurrencyArray;
 
-//std::string URL_CBR = "https://www.cbr-xml-daily.ru/daily_utf8.xml";
-
-
 pugi::xml_document GetCurrencyXML();
 
 
@@ -43,3 +40,7 @@ void GetCurrencyToArray();
 void ShowCurrenciesList();
 
 bool ConvertCurrency(std::vector<float>& InputVector, float& Result);
+
+extern size_t CurrentMainCurrencyId;
+
+bool RecalculateCurrencyArray(size_t NewMainCurrencyId);

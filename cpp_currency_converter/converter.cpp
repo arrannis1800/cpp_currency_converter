@@ -1,6 +1,7 @@
 #include "converter.h"
 
 std::vector<Currency> CurrencyArray;
+size_t CurrentMainCurrencyId = 0;
 
 pugi::xml_document GetCurrencyXML()
 {
@@ -70,6 +71,35 @@ bool ConvertCurrency(std::vector<float>& InputVector, float& Result)
     float Amount = InputVector[2];
 
     Result = NormalizedCurrencyFrom / NormalizedCurrencyTo * Amount;
+
+    return true;
+}
+
+bool RecalculateCurrencyArray(size_t NewMainCurrencyId)
+{
+    if (NewMainCurrencyId > CurrencyArray.size())
+    {
+        return false;
+    }
+    Currency RefCurrency = CurrencyArray[NewMainCurrencyId];
+
+    for (auto& currency : CurrencyArray)
+    {
+        currency.CurrencyRate = currency.CurrencyRate/currency.Nominal;
+        currency.Nominal = 1;
+
+        // new rate
+        currency.CurrencyRate = currency.CurrencyRate / (RefCurrency.CurrencyRate / RefCurrency.Nominal);
+        // new nominal 
+        while (currency.CurrencyRate < 0.9f)
+        {
+            currency.CurrencyRate *= 10;
+            currency.Nominal *= 10;
+        }
+
+    }
+
+    CurrentMainCurrencyId = NewMainCurrencyId;
 
     return true;
 }

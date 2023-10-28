@@ -12,7 +12,6 @@ bool App::ParseInput(std::string InputString, std::vector<float>& Result)
             try
             {
                 Result.push_back(std::stof(temp));
-                throw temp;
             }
             catch (std::exception& ex) { return false; }
             temp = "";
@@ -111,7 +110,7 @@ void App::ShowPage(AppPages& Page) {
         }
         if (v.size() == 3)
         {
-            Page = ConvertCurrency(v, ConvertedMoney) ? RESULT_PAGE : ERROR_PAGE;
+            Page = ConvertCurrency(v) ? RESULT_PAGE : ERROR_PAGE;
             return;
         }
         if (v.size() == 1 && Page == SHOW_CURRENCY_PAGE)

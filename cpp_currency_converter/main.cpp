@@ -3,8 +3,9 @@
 int main()
 {
     App app;
-    app.InitApp();
 
+    app.InitApp();
     app.RunApp();
+
     return 0;
 }

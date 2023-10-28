@@ -25,7 +25,6 @@ public:
     bool ParseInput(std::string InputString, std::vector<float>& Result);
 
 private:
-    float ConvertedMoney;
 
     bool bRun;
 

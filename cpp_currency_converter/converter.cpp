@@ -2,6 +2,7 @@
 
 std::vector<Currency> CurrencyArray;
 size_t CurrentMainCurrencyId = 0;
+float ConvertedMoney = 0;
 
 pugi::xml_document GetCurrencyXML()
 {
@@ -59,7 +60,7 @@ void ShowCurrenciesList()
     }
 }
 
-bool ConvertCurrency(std::vector<float>& InputVector, float& Result)
+bool ConvertCurrency(std::vector<float>& InputVector)
 {
     size_t CurrencyArrayLength = CurrencyArray.size();
 
@@ -70,7 +71,7 @@ bool ConvertCurrency(std::vector<float>& InputVector, float& Result)
     float NormalizedCurrencyTo = CurrencyArray[(int)InputVector[1]].CurrencyRate / CurrencyArray[(int)InputVector[1]].Nominal;
     float Amount = InputVector[2];
 
-    Result = NormalizedCurrencyFrom / NormalizedCurrencyTo * Amount;
+    ConvertedMoney = NormalizedCurrencyFrom / NormalizedCurrencyTo * Amount;
 
     return true;
 }

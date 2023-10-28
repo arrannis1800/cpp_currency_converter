@@ -39,8 +39,10 @@ void GetCurrencyToArray();
 
 void ShowCurrenciesList();
 
-bool ConvertCurrency(std::vector<float>& InputVector, float& Result);
+bool ConvertCurrency(std::vector<float>& InputVector);
 
 extern size_t CurrentMainCurrencyId;
+
+extern float ConvertedMoney;
 
 bool RecalculateCurrencyArray(size_t NewMainCurrencyId);

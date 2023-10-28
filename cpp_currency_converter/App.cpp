@@ -16,8 +16,8 @@ bool App::ParseInput(std::string InputString, std::vector<float>& Result)
             catch (std::exception& ex) { return false; }
             temp = "";
             break;
-        case '.':
-            temp += ',';
+        case ',':
+            temp += '.';
             break;
         case '-':
             return false;

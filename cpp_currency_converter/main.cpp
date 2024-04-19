@@ -2,7 +2,7 @@
 
 int main()
 {
-    App app;
+    App& app = App::instance();
 
     app.InitApp();
     app.RunApp();

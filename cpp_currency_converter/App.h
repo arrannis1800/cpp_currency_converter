@@ -16,6 +16,8 @@ enum AppPages {
 
 class App {
 public:
+    static App& instance();
+
     void InitApp();
 
     void RunApp();
@@ -27,6 +29,11 @@ public:
     bool ParseInput(std::string InputString, std::vector<float>& Result);
 
 private:
+
+    App() {};
+
+    App(App const&);
+    App& operator=(App const&);
 
     bool bRun;
 

@@ -1,6 +1,12 @@
 #include <thread>
 #include "App.h"
 
+App& App::instance()
+{
+    static App app;
+    return app;
+}
+
 bool App::ParseInput(std::string InputString, std::vector<float>& Result)
 {
     std::string temp;

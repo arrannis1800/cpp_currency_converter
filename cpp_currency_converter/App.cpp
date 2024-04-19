@@ -1,3 +1,4 @@
+#include <thread>
 #include "App.h"
 
 bool App::ParseInput(std::string InputString, std::vector<float>& Result)
@@ -37,9 +38,14 @@ bool App::ParseInput(std::string InputString, std::vector<float>& Result)
 
 void App::InitApp()
 {
-    GetCurrencyToArray();
-
     bRun = true;
+    std::thread get_array(GetCurrencyToArray);
+    
+    bool showLoading = true;
+    std::thread show_loading(&App::ShowLoadingPage, this, std::ref(showLoading));
+    show_loading.detach();
+    get_array.join();
+    showLoading = false;
 
     Page = MAIN_PAGE;
 }
@@ -121,4 +127,22 @@ void App::ShowPage(AppPages& Page) {
         Page = ERROR_PAGE;
     }
 
+}
+
+void App::ShowLoadingPage(bool& flag)
+{
+    int counter = 0;
+    while (flag)
+    {
+        system("cls");
+        std::cout << "Information is loading";
+        for (int i = 0; i < counter % 4; i++)
+        {
+            std::cout << ".";
+        }
+        std::cout << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        counter++;
+    }
+    
 }

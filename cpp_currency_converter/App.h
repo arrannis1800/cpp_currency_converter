@@ -22,6 +22,8 @@ public:
 
     void ShowPage(AppPages& Page);
 
+    void ShowLoadingPage(bool& flag);
+
     bool ParseInput(std::string InputString, std::vector<float>& Result);
 
 private:
